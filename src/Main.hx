@@ -1,7 +1,12 @@
+import hxd.res.Sound;
+import hxd.res.Loader;
+
 class Main extends hxd.App {
     var bmp : h2d.Bitmap;
+    var yip:Sound = null;
+
     override function init() {
-        hxd.Res.initEmbed();
+        hxd.Res.initLocal();
         // allocate a Texture with red color and creates a 100x100 Tile from it
         var tile = hxd.Res.img.Riv.toTile();
         // create a Bitmap object, which will display the tile
@@ -12,10 +17,10 @@ class Main extends hxd.App {
         // modify the display position of the Bitmap sprite
         bmp.x = s2d.width * 0.5;
         bmp.y = s2d.height * 0.5;
-        hxd.Res.initLocal();
-        for( s in hxd.Res.load("sfx") )
-			s.toSound().getData();
-        hxd.Res.sfx.yippee;
+
+        yip = hxd.Res.sfx.yippee;
+        yip.play();
+
     }
     // on each frame
     override function update(dt:Float) {
