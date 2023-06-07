@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import h2d.Bitmap;
 
 var vel = [0.,0.];
@@ -5,10 +6,17 @@ var win = hxd.Window.getInstance();
 var isgrounded = false;
 var ground = 0.;
 var speed = 1.;
+=======
+import hxd.res.Sound;
+import hxd.res.Loader;
+
+>>>>>>> 1fe4f90bcaa083a8e7c6ababcb19b199306d9379
 class Main extends hxd.App {
     var bmp : h2d.Bitmap;
+    var yip:Sound = null;
+
     override function init() {
-        hxd.Res.initEmbed();
+        hxd.Res.initLocal();
         // allocate a Texture with red color and creates a 100x100 Tile from it
         var tile = hxd.Res.img.Riv.toTile();
         // create a Bitmap object, which will display the tile
