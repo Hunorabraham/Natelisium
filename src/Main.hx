@@ -1,3 +1,10 @@
+import h2d.Bitmap;
+
+var vel = [0.,0.];
+var win = hxd.Window.getInstance();
+var isgrounded = false;
+var ground = 0.;
+var speed = 1.;
 class Main extends hxd.App {
     var bmp : h2d.Bitmap;
     override function init() {
@@ -10,17 +17,49 @@ class Main extends hxd.App {
         tile.dy = tile.height/-2;
         bmp = new h2d.Bitmap(tile, s2d);
         // modify the display position of the Bitmap sprite
-        bmp.x = s2d.width * 0.5;
-        bmp.y = s2d.height * 0.5;
-        hxd.Res.initLocal();
-        for( s in hxd.Res.load("sfx") )
-			s.toSound().getData();
-        hxd.Res.sfx.yippee;
+        bmp.x = s2d.width/2;
+        bmp.y = s2d.height/2;
+        ground = s2d.height-tile.height/2;
+        function onEvent(event : hxd.Event) {
+            switch(event.kind) {
+                case EKeyDown: trace('DOWN keyCode: ${event.keyCode}, charCode: ${event.charCode}');
+                case EKeyUp: trace('UP keyCode: ${event.keyCode}, charCode: ${event.charCode}');
+                case _:
+            }
+        }
+        hxd.Window.getInstance().addEventTarget(onEvent);
     }
     // on each frame
     override function update(dt:Float) {
         // increment the display bitmap rotation by 0.1 radians
-        bmp.rotation += 0.05;
+        vel[0] = 0;
+        if(hxd.Key.isPressed(16)){
+            speed *= 2;
+        }
+        if(hxd.Key.isReleased(16)){
+            speed *= 0.5;
+        }
+        if(hxd.Key.isDown(65)){
+            vel[0] -= speed;
+        }
+        if(hxd.Key.isDown(68)){
+            vel[0] += speed;
+        }
+        if(!isgrounded){
+            vel[1] += 0.05;
+        }else if(hxd.Key.isDown(hxd.Key.SPACE)){
+            vel[1] -= 2.5;
+            hxd.Res.sfx.yippee.play();
+            isgrounded = false;
+        }
+        if(bmp.y > ground&&!isgrounded){
+            trace(ground);
+            bmp.y = ground;
+            vel[1] = 0;
+            isgrounded = true;
+        }
+        bmp.x += vel[0];
+        bmp.y += vel[1];
     }
     static function main() {
         new Main();
